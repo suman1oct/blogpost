@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect
 from django.views import generic
 from django.views.generic import View
 from django.http import HttpResponse
-from django.views.generic.edit import DeleteView
+#from django.views.generic.edit import DeleteView
 #from django.http import HttpRequest
 """def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -125,6 +125,8 @@ class AddView(CreateView):
 			post.author = self.request.user
 			post.save()
 		return super(AddView, self).form_valid(form, *dscvdsvc, **fdsv)
+
+
 class DeleteView(DeleteView):
     model = Post
     template_name='blog/delete.html'

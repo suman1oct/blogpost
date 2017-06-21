@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'dashing',
+    'pipeline',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pipeline.middleware.MinifyHTMLMiddleware',
 ]
 
 ROOT_URLCONF = 'blogproject.urls'
@@ -161,3 +163,58 @@ CKEDITOR_BROWSE_SHOW_DIRS=True
 AWS_QUERYSTRING_AUTH = False
 
 LOGIN_REDIRECT_URL = '/'
+
+# STATICFILES_STORAGES='pipeline.storage.PipelineCachedStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_COMPILERS =(
+    'pipeline.compilers.coffee.CoffeeScriptCompiler',
+    'pipeline.compilers.style.StyleCompiler',
+)
+
+# PIPELINE_JS = {}
+# PIPELINE_CSS = {}
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+PIPELINE = {
+    'STYLESHEETS': {
+        'colors': {
+            'source_filenames': (
+              'css/bootstrap.css',
+              'css/font.css',
+              'css/main.css',
+              'css/mdb.css',
+              'css/mdb-n.css',
+              'css/page-2.css',
+              'css/post.css',
+              'css/sign-up.css',
+              'style.css',
+              'theme.css',
+            ),
+            'output_filename': 'css/colors.css',
+            'extra_context': {
+                'media': 'screen,projection',
+            },
+        },
+    },
+    'JAVASCRIPT': {
+        'stats': {
+            'source_filenames': (
+              'js/bootstrap.min.js',
+              'js/jquery-2.2.3.min.js',
+              #'js/jquery-3.1.1.js',
+              'js/main.js',
+              'js/mdb.js',
+              'js/tether.js',
+            ),
+            'output_filename': 'js/stats.js',
+        }
+    }
+}
+
+PIPELINE_ENABLED=True
+
